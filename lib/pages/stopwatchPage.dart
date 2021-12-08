@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:stopwatchpro/widgets/animatedClock.dart';
-import 'package:stopwatchpro/widgets/bottomActionButtons.dart';
+import '../widgets/animatedClock.dart';
+import '../widgets/bottomActionButtons.dart';
+import '../widgets/drawer_widget.dart';
+import '../widgets/stopwatchListViewWidget.dart';
 import '/service/stopwatchService.dart';
 import 'package:provider/provider.dart';
 
@@ -15,16 +17,26 @@ class StopwatchPage extends StatefulWidget {
 }
 
 class _StopwatchPageState extends State<StopwatchPage> {
+  final GlobalKey<ScaffoldState> globalKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     StopwatchService stopwatchService = Provider.of<StopwatchService>(context);
     return Scaffold(
+        key: globalKey,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             widget.title,
             style: TextStyle(color: Theme.of(context).primaryColor),
           ),
+          actions: [
+            IconButton(
+                color: Colors.white,
+                onPressed: () => globalKey.currentState!.openEndDrawer(),
+                icon: const Icon(Icons.history))
+          ],
         ),
+        endDrawer: const DrawerWidget(),
         body: Stack(
           alignment: Alignment.center,
           children: <Widget>[
@@ -47,24 +59,11 @@ class _StopwatchPageState extends State<StopwatchPage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: SizedBox.fromSize(
-                size: Size.fromHeight(MediaQuery.of(context).size.height - 456),
-                child: ListView.builder(
-                    itemCount: stopwatchService.lapList.length,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (itemBuilder, index) => ListTile(
-                          dense: true,
-                          leading: Text(
-                              '${stopwatchService.lapList.length - (index)}',
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText1),
-                          title: Text(
-                            StopwatchService.toStringFormat(stopwatchService
-                                    .lapList[
-                                stopwatchService.lapList.length - (index + 1)]),
-                            style: Theme.of(context).primaryTextTheme.bodyText1,
-                          ),
-                        )),
-              ),
+                  size:
+                      Size.fromHeight(MediaQuery.of(context).size.height - 456),
+                  child: StopwatchListViewWidget(
+                    laps: stopwatchService.lapList,
+                  )),
             )
           ],
         ),

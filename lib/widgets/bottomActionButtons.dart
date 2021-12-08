@@ -1,6 +1,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../models/History.dart';
+import '../service/userPreferences.dart';
 import '/service/stopwatchService.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +26,6 @@ class BottomActionButtons extends StatelessWidget {
                   height: double.maxFinite,
                   color: Theme.of(context).primaryColor,
                   onPressed: () {
-                    stopwatchService.lapCls();
                     stopwatchService.resume();
                   },
                   child: Text(
@@ -41,10 +43,26 @@ class BottomActionButtons extends StatelessWidget {
                           height: double.maxFinite,
                           color:
                               Theme.of(context).primaryColor.withOpacity(0.4),
-                          onPressed: () {
-                            !stopwatchService.isRunning
-                                ? stopwatchService.reset()
-                                : stopwatchService.lap();
+                          onPressed: () async {
+                            if (!stopwatchService.isRunning) {
+                              stopwatchService.reset();
+                              if (stopwatchService.lapList.isNotEmpty) {
+                                await UserPreferences.addHistory(History(
+                                    date:
+                                        DateFormat.yMd().format(DateTime.now()),
+                                    time: DateFormat("hh:mm:ss a")
+                                        .format(DateTime.now()),
+                                    title: DateFormat.yMMMd()
+                                        .format(DateTime.now()),
+                                    laps: stopwatchService.lapList
+                                        .map((Duration e) =>
+                                            StopwatchService.toStringFormat(e))
+                                        .toList()));
+                                stopwatchService.lapCls();
+                              }
+                            } else {
+                              stopwatchService.lap();
+                            }
                           },
                           child: Text(
                             !stopwatchService.isRunning ? 'Reset' : 'Lap',

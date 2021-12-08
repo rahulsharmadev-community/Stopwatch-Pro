@@ -51,18 +51,19 @@ class StopwatchService extends ChangeNotifier {
   Stream<Duration> _timerStream(refreshTime) => Stream<Duration>.periodic(
       Duration(milliseconds: refreshTime), (value) => _stopwatch.elapsed);
 
-  String get _intoString =>
-      '${_stopwatch.elapsed.inMinutes.remainder(60).toString().padLeft(2, '0')}'
-      ':${_stopwatch.elapsed.inSeconds.remainder(60).toString().padLeft(2, '0')}'
-      ':${_stopwatch.elapsed.inMilliseconds.remainder(60).toString().padLeft(2, '0')}';
-
   /// Widget rebuild Time in milliseconds
   StreamBuilder text<Duration>(int? refreshTime, TextStyle? style) {
     return StreamBuilder(
       stream: _timerStream(refreshTime ?? 100),
-      builder: (context, snapshot) => Text(_intoString, style: style),
+      builder: (context, snapshot) =>
+          Text(toStringFormat(_stopwatch.elapsed), style: style),
     );
   }
+
+  static Duration toDurationFormat(String string) => Duration(
+      minutes: int.parse(string.split(':')[0]),
+      seconds: int.parse(string.split(':')[1]),
+      milliseconds: int.parse(string.split(':')[2]));
 
   static String toStringFormat(Duration duration) =>
       '${duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:'
