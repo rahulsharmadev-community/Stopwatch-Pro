@@ -23,7 +23,8 @@ class _AnimatedClockState extends State<AnimatedClock>
   void initState() {
     // TODO: implement initState
     super.initState();
-    lotteController = AnimationController(vsync: this);
+    lotteController =
+        AnimationController(duration: const Duration(seconds: 3), vsync: this);
   }
 
   @override
@@ -33,28 +34,28 @@ class _AnimatedClockState extends State<AnimatedClock>
     super.dispose();
   }
 
+  updateState() async {
+    stopwatchService.isRunning
+        ? await lotteController.repeat()
+        : lotteController.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
     stopwatchService = Provider.of<StopwatchService>(context);
-    Future.delayed(const Duration(milliseconds: 120), () async {
-      stopwatchService.isRunning
-          ? await lotteController.repeat()
-          : lotteController.stop();
-    });
+    updateState();
     return Stack(
       alignment: Alignment.center,
       children: [
         !stopwatchService.isReset
-            ? LottieBuilder.asset(
-                'assets/lottieJson/dark.json',
+            ? LottieBuilder.asset('assets/lottieJson/dark.json',
                 controller: lotteController,
                 repeat: true,
                 fit: BoxFit.fill,
-                onLoaded: (value) {
-                  lotteController.duration = value.duration;
-                },
-              )
-            : Offstage(),
+                onLoaded: (value) => setState(() {
+                      lotteController..duration = value.duration;
+                    }))
+            : const Offstage(),
         Align(
             alignment: Alignment.center,
             child: FittedBox(fit: BoxFit.fitWidth, child: widget.child)),

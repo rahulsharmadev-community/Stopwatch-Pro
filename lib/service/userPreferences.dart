@@ -21,6 +21,9 @@ abstract class UserPreferences {
     await _preferences.setStringList(_keyHistoryList, tempList);
   }
 
+  static Future<void> cleanHistory() async =>
+      await _preferences.setStringList(_keyHistoryList, []);
+
   static Future<void> UpdateHistoryTitle(int index, String title) async {
     var tempList = _preferences.getStringList(_keyHistoryList) ?? [];
     var old = History.fromRawJson(tempList[index]);

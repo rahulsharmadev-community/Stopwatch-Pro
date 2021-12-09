@@ -58,6 +58,7 @@ class BottomActionButtons extends StatelessWidget {
                                         .map((Duration e) =>
                                             StopwatchService.toStringFormat(e))
                                         .toList()));
+                                showMassege(context);
                                 stopwatchService.lapCls();
                               }
                             } else {
@@ -89,5 +90,15 @@ class BottomActionButtons extends StatelessWidget {
               ),
       ),
     );
+  }
+
+  void showMassege(BuildContext context) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 1),
+        margin: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        content: const Text('Laps added to history.')));
   }
 }

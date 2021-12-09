@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../service/userPreferences.dart';
 import '../widgets/stopwatchListViewWidget.dart';
-import '/service/stopwatchService.dart';
+import '../service/stopwatchService.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -44,15 +44,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
             actions: [
               IconButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (builder) => const LicensePage(
-                            applicationName: 'Stopwatch Pro',
-                            applicationVersion: '1.0.0',
-                            applicationLegalese:
-                                '© 2021 rahulsharmadev-community',
-                          ))),
-                  icon: const Icon(Icons.copyright_rounded))
+                  onPressed: () {
+                    setState(() {});
+                    UserPreferences.cleanHistory();
+                  },
+                  icon: const Icon(Icons.cleaning_services_outlined))
             ],
           ),
           Expanded(
