@@ -1,5 +1,5 @@
 # Stopwatch Pro
-- See [LICENSE](/LICENSE)
+ • See [LICENSE](/LICENSE)  • See [Privacy Policy](/PRIVACY POLICY) • See [Terms & Conditions](/TERMS & CONDITIONS) 
 
 Hybrid Stopwatch and Timer is a simple, easy and accurate app for android that will help you to measure the time of any situation, like sports, cooking, games, education, etc.
 
