@@ -25,20 +25,22 @@ class _StopwatchPageState extends State<StopwatchPage> {
         key: globalKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: GestureDetector(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (builder) => const LicensePage(
-                      applicationName: 'Stopwatch Pro',
-                      applicationVersion: '1.0.0',
-                      applicationLegalese: '© 2021 rahulsharmadev-community',
-                    ))),
-            child: Text(
-              widget.title,
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
+          title: Text(
+            widget.title,
+            style: TextStyle(color: Theme.of(context).primaryColor),
           ),
           actions: [
+            IconButton(
+                color: Colors.white,
+                icon: const Icon(Icons.copyright_rounded),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (builder) => const LicensePage(
+                          applicationName: 'Stopwatch Pro',
+                          applicationVersion: '1.0.0',
+                          applicationLegalese:
+                              '© 2021 rahulsharmadev-community',
+                        )))),
             IconButton(
                 color: Colors.white,
                 onPressed: () => globalKey.currentState!.openEndDrawer(),
